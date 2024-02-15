@@ -1,0 +1,17 @@
+#N canvas 172 25 1253 772 12;
+#X obj 16 34 inlet~ inL-\$1;
+#X obj 126 34 inlet~ inR-\$1;
+#X obj 243 31 r notesIn-\$1;
+#X obj 634 20 r auxIn-\$1;
+#X obj 633 43 r expIn-\$1;
+#X obj 633 68 r fsIn-\$1;
+#X obj 344 36 r ctrlIn-\$1;
+#X obj 465 742 s notesOut-\$1;
+#X obj 571 742 s ctrlOut-\$1;
+#X obj 52 723 outlet~ outL-\$1;
+#X obj 275 733 outlet~ outR-\$1;
+#X obj 981 48 r knob3-\$1;
+#X obj 183 300 osc~ 600;
+#X connect 2 0 7 0;
+#X connect 12 0 9 0;
+#X connect 12 0 10 0;
