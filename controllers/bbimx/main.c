@@ -123,10 +123,11 @@ int main() {
     timer_reset();
 
     //start the patch
-    mode = 0;  // play mode
+    mode = 1;  // disk mode
     
     // shouldn't be in disk mode at this point, but just in case disable
-    system("rmmod g_mass_storage");
+    //system("rmmod g_mass_storage");
+    toggle_disk_mode();
     load_patch();
     
     for (;;){
@@ -146,14 +147,22 @@ int main() {
             // first 20 are keys 
             for(uint8_t i = 0; i < 4; i++){
                 if (((buttons >> i) & 1) != buttons_last[i]){
+                    //if key 1 is newly down while others are down, reload patch
+                    // otherwise  just send the key
+                    uint8_t key_1_last = buttons_last[1];
+                    uint8_t key_1_current = (buttons >> 1) & 1;
+                    printf ("%d %d %d \n", key_1_last, key_1_current, (buttons & 0xF));
+                    if (key_1_last == 1 && key_1_current  == 0 && (buttons & 0xF) == 0) {
+                        printf("RELOAD\n");
+                        load_patch();
+                    }
+                    else lo_send(t, "/key", "ii", i, ~(buttons >> i) & 1);
                     buttons_last[i] = (buttons >> i) & 1;
-                    lo_send(t, "/key", "ii", i, ~(buttons >> i) & 1);
                 }
             }
 
             // send knobs 
             lo_send(t, "/knobs", "ii", data_po[1], data_po[2]);
-            
         }
         // just get the keys if 50 ms not yet elapsed
         else {
@@ -164,13 +173,21 @@ int main() {
             // first 20 are keys 
             for(uint8_t i = 0; i < 4; i++){
                 if (((buttons >> i) & 1) != buttons_last[i]){
+                    //if key 1 is newly down while others are down, reload patch
+                    // otherwise  just send the key
+                    uint8_t key_1_last = buttons_last[1];
+                    uint8_t key_1_current = (buttons >> 1) & 1;
+                    printf ("%d %d %d \n", key_1_last, key_1_current, (buttons & 0xF));
+                    if (key_1_last == 1 && key_1_current  == 0 && (buttons & 0xF) == 0) {
+                        printf("RELOAD\n");
+                        load_patch();
+                    }
+                    else lo_send(t, "/key", "ii", i, ~(buttons >> i) & 1);
                     buttons_last[i] = (buttons >> i) & 1;
-                    lo_send(t, "/key", "ii", i, ~(buttons >> i) & 1);
                 }
             }
             
         }
-
     }
     // bye bye
     lo_server_thread_free(st);
