@@ -14,7 +14,6 @@ void timer_reset(void) {
     gettimeofday(&start, NULL);
 }
 
-
 // time in ms
 float timer_get_elapsed(void) {
     gettimeofday(&stop, NULL);
@@ -24,10 +23,13 @@ float timer_get_elapsed(void) {
     return e * 1000.f;
 }
 
-// patch loading stuff
+// patch loading and general stuff
 void check_for_reload(); // checks key combo for reloading patch
 void load_patch();
 void toggle_disk_mode();
+void get_buttons();
+void get_knobs_and_buttons();
+void check_and_send_buttons();
 
 // osc handlers
 void error(int num, const char *m, const char *path);
@@ -47,12 +49,14 @@ struct i2c_dev i2c;
 uint8_t data_pi[DATA_PI_SIZE] = {  1,1,1,
                                    1,1,1};
 uint8_t data_po[DATA_PO_SIZE] = {0,0,0};
-uint32_t buttons_last[4] = {1,1,1,1};
+uint32_t buttons_last[4] = {0,0,0,0};       // 1 is pressed, 0 is up
+uint32_t buttons_current[4] = {0,0,0,0};
 int fd;
 struct pollfd pfd;
 uint8_t int_pin;
 int ret;
-int mode = 0;  // mode of operation, 0 = normal / play mode, 1 = USB file transfer / test mode 
+int mode = 0;     // mode of operation, 0 = normal / play mode, 1 = USB file transfer / test mode 
+int dev_mode = 0; // if dev mode is 1 we load normal patch in disk mode, 0 we load the test patch
 
 lo_address t; // osc sender
 
@@ -122,14 +126,16 @@ int main() {
 
     timer_reset();
 
-    //start the patch
-    mode = 1;  // disk mode
-    
     // shouldn't be in disk mode at this point, but just in case disable
-    //system("rmmod g_mass_storage");
-    toggle_disk_mode();
+    system("rmmod g_mass_storage");
     load_patch();
-    
+   
+    // get initial buttons to check for dev mode
+    get_buttons();
+    // if the mode button (3) is being held, we are in dev mode
+    if (buttons_current[3]) dev_mode = 1; 
+    printf("DEV MODE: %d \n", dev_mode);
+
     for (;;){
         
         // wait up to 50ms for int pin
@@ -140,53 +146,16 @@ int main() {
         if (timer_get_elapsed() > 49) {
             timer_reset();
             
-            i2c_read(&i2c, data_po, DATA_PO_SIZE);
-            uint32_t buttons;
-            buttons = data_po[0];
-            
-            // first 20 are keys 
-            for(uint8_t i = 0; i < 4; i++){
-                if (((buttons >> i) & 1) != buttons_last[i]){
-                    //if key 1 is newly down while others are down, reload patch
-                    // otherwise  just send the key
-                    uint8_t key_1_last = buttons_last[1];
-                    uint8_t key_1_current = (buttons >> 1) & 1;
-                    printf ("%d %d %d \n", key_1_last, key_1_current, (buttons & 0xF));
-                    if (key_1_last == 1 && key_1_current  == 0 && (buttons & 0xF) == 0) {
-                        printf("RELOAD\n");
-                        load_patch();
-                    }
-                    else lo_send(t, "/key", "ii", i, ~(buttons >> i) & 1);
-                    buttons_last[i] = (buttons >> i) & 1;
-                }
-            }
+            get_knobs_and_buttons();
+            check_and_send_buttons();
 
             // send knobs 
             lo_send(t, "/knobs", "ii", data_po[1], data_po[2]);
         }
         // just get the keys if 50 ms not yet elapsed
         else {
-            i2c_read(&i2c, data_po, 1);
-            uint32_t buttons;
-            buttons = data_po[0];
-            
-            // first 20 are keys 
-            for(uint8_t i = 0; i < 4; i++){
-                if (((buttons >> i) & 1) != buttons_last[i]){
-                    //if key 1 is newly down while others are down, reload patch
-                    // otherwise  just send the key
-                    uint8_t key_1_last = buttons_last[1];
-                    uint8_t key_1_current = (buttons >> 1) & 1;
-                    printf ("%d %d %d \n", key_1_last, key_1_current, (buttons & 0xF));
-                    if (key_1_last == 1 && key_1_current  == 0 && (buttons & 0xF) == 0) {
-                        printf("RELOAD\n");
-                        load_patch();
-                    }
-                    else lo_send(t, "/key", "ii", i, ~(buttons >> i) & 1);
-                    buttons_last[i] = (buttons >> i) & 1;
-                }
-            }
-            
+            get_buttons();
+            check_and_send_buttons();
         }
     }
     // bye bye
@@ -199,25 +168,45 @@ int main() {
     return 0;
 }
 
-void check_for_reload(){
-    //  switch to disk mode is shift + keys 13,15,18 (high c#, d#, f#)
-    //  patch is also reloaded bc /sdcard gets mounted read only in disk mode
-    if(!buttons_last[13] && !buttons_last[15] && !buttons_last[18] && !buttons_last[20]){
-        printf("CHANGE TO DISKMODE \n");
-        mode++;
-        mode &= 0x1;
-        toggle_disk_mode();
-        load_patch();
-    }
-
-    // reload patch, without switching in or out of disk mode is shift + 16, 17, 19 (high e,f,g)
-    if(!buttons_last[16] && !buttons_last[17] && !buttons_last[19] && !buttons_last[20]){
-        printf("RELOAD PATCH \n");
-        load_patch();
+void check_and_send_buttons(){
+    for(uint8_t i = 0; i < 4; i++){
+        if (buttons_current[i] != buttons_last[i]){
+            // if mode key (3) is newly down while prev (0) or next (2) also down, do things
+            // otherwise  just send the key
+            if (buttons_current[3] && !buttons_last[3] && buttons_current[2]) {
+                printf("DISKMODE TOGGLE\n");
+                toggle_disk_mode();
+                load_patch();
+            }
+            else if (buttons_current[3] && !buttons_last[3] && buttons_current[0]) {
+                printf("RELOAD PATCH \n");
+                load_patch();
+            }
+            else { 
+                lo_send(t, "/key", "ii", i, buttons_current[i]);
+            }
+            buttons_last[i] = buttons_current[i];
+        }
     }
 }
 
+void get_buttons(){
+    i2c_read(&i2c, data_po, 1); // just get the first byte for the buttons
+    uint32_t buttons;
+    buttons = data_po[0];
+    for(uint8_t i = 0; i < 4; i++) buttons_current[i] = ~(buttons >> i) & 1;
+}
+
+void get_knobs_and_buttons(){
+    i2c_read(&i2c, data_po, DATA_PO_SIZE);
+    uint32_t buttons;
+    buttons = data_po[0];
+    for(uint8_t i = 0; i < 4; i++) buttons_current[i] = ~(buttons >> i) & 1;
+}
+
 void toggle_disk_mode() {
+    mode++;
+    mode &= 0x1;
 
     // play mode
     if (mode == 0) {
