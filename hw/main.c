@@ -45,10 +45,10 @@ struct i2c_dev i2c;
 
 // data to and from the peripheral
 #define DATA_PI_SIZE 6
-#define DATA_PO_SIZE 3
+#define DATA_PO_SIZE 5
 uint8_t data_pi[DATA_PI_SIZE] = {  1,1,1,
                                    1,1,1};
-uint8_t data_po[DATA_PO_SIZE] = {0,0,0};
+uint8_t data_po[DATA_PO_SIZE] = {0xFF,0,0,0,0};
 uint32_t buttons_last[4] = {0,0,0,0};       // 1 is pressed, 0 is up
 uint32_t buttons_current[4] = {0,0,0,0};
 int fd;
@@ -140,17 +140,19 @@ int main() {
         
         // wait up to 50ms for int pin
 		lseek(fd, 0, SEEK_SET);
-		ret = poll(&pfd, 1, 50);
+		ret = poll(&pfd, 1, 20);
 		read(fd, &int_pin, 1);      
         // get keys, knobs, set leds if ~50 ms has elapsed
-        if (timer_get_elapsed() > 49) {
+        if (timer_get_elapsed() > 19) {
             timer_reset();
             
             get_knobs_and_buttons();
             check_and_send_buttons();
 
-            // send knobs 
-            lo_send(t, "/knobs", "ii", data_po[1], data_po[2]);
+            // send knobs
+            uint16_t k1 = (uint16_t)((data_po[2] << 8) | data_po[1]);
+            uint16_t k2 = (uint16_t)((data_po[4] << 8) | data_po[3]);
+            lo_send(t, "/knobs", "ii", k1, k2);
         }
         // just get the keys if 50 ms not yet elapsed
         else {
