@@ -8,8 +8,6 @@
 #define SCK_HI PORTB|=(1<<7);
 #define SCK_LOW PORTB&=~(1<<7);
 
-#define LED_COUNT 3
-
 void apa102_init(void) {
     
     DDRB |= ((1<<5)|(1<<7));

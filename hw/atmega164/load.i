@@ -1,5 +1,5 @@
 # 1 "load.c"
-# 1 "/Users/owen1/repos/Kaleidoloop/controllers/bbimx/atmega164//"
+# 1 "/Users/owen1/repos/Kaleidoloop/hw/atmega164//"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "load.c"
@@ -457,7 +457,7 @@ void apa102_set_all_leds(uint8_t r, uint8_t g, uint8_t b);
 
 void i2c_init(uint8_t address);
 void i2c_stop(void);
-void i2c_setCallbacks(void (*recv)(uint8_t), void (*req)());
+void i2c_setCallbacks(void (*recv)(uint8_t), void (*req)(void));
 
 inline void __attribute__((always_inline)) i2c_transmitByte(uint8_t data)
 {
@@ -474,8 +474,8 @@ void __vector_26 (void) __attribute__ ((signal,used, externally_visible)) ; void
 # 16 "i2c_peripheral.h"
             ;
 # 8 "load.c" 2
-# 16 "load.c"
-uint8_t data_po[3] = {0xFF,0,0};
+# 17 "load.c"
+uint8_t data_po[5] = {0xFF,0,0, 0, 0};
 uint8_t debounce_timer[4] = {0,0,0,0};
 uint8_t buttons[4] = {1,1,1,1};
 
@@ -492,16 +492,16 @@ void i2c_received(uint8_t received_data) {
     if (i2c_recv_index == 6) i2c_recv_index = 0;
  }
 
-void i2c_requested() {
+void i2c_requested(void) {
 
     
-# 35 "load.c" 3
+# 36 "load.c" 3
    (*(volatile uint8_t *)((0x08) + 0x20))
-# 35 "load.c"
+# 36 "load.c"
    &=~(1<<2);;
     i2c_transmitByte(data_po[i2c_send_index]);
     i2c_send_index++;
-    if (i2c_send_index == 3) i2c_send_index = 0;
+    if (i2c_send_index == 5) i2c_send_index = 0;
 }
 
 
@@ -517,42 +517,59 @@ void delay_ms(uint16_t dtime){
 
 void read_adc(void) {
     uint8_t ch = 0;
+    uint16_t v;
+    uint8_t h,l,ih, il;
     for (ch = 0; ch < 2; ch++) {
+
+
         
-# 55 "load.c" 3
+# 60 "load.c" 3
        (*(volatile uint8_t *)(0x7C)) 
-# 55 "load.c"
+# 60 "load.c"
              = ch;
         
-# 56 "load.c" 3
-       (*(volatile uint8_t *)(0x7C)) 
-# 56 "load.c"
-             |= (1 << 5);
-        
-# 57 "load.c" 3
+# 61 "load.c" 3
        (*(volatile uint8_t *)(0x7A)) 
-# 57 "load.c"
+# 61 "load.c"
               = 0xD6;
         while(!(
-# 58 "load.c" 3
+# 62 "load.c" 3
                (*(volatile uint8_t *)(0x7A)) 
-# 58 "load.c"
+# 62 "load.c"
                       & 1<<
-# 58 "load.c" 3
+# 62 "load.c" 3
                            4
-# 58 "load.c"
+# 62 "load.c"
                                ));
-        data_po[ch + 1] = 
-# 59 "load.c" 3
-                         (*(volatile uint8_t *)(0x79))
-# 59 "load.c"
-                             ;
+        v = 
+# 63 "load.c" 3
+           (*(volatile uint16_t *)(0x78))
+# 63 "load.c"
+              ;
+
+
+        l = (uint8_t)(v & 0xff);
+        h = (uint8_t)((v >> 8) & 0xff);
+        il = 1 + (ch * 2);
+        ih = 2 + (ch * 2);
+        
+# 70 "load.c" 3
+       __asm__ __volatile__ ("cli" ::: "memory")
+# 70 "load.c"
+            ;
+        data_po[il] = l;
+        data_po[ih] = h;
+        
+# 73 "load.c" 3
+       __asm__ __volatile__ ("sei" ::: "memory")
+# 73 "load.c"
+            ;
     }
 }
 
 void set_leds(void) {
     apa102_start();
-    for (uint8_t i = 0; i < 3; i++){
+    for (uint8_t i = 0; i < 2; i++){
         apa102_set_led(data_pi[i*3], data_pi[(i*3)+1], data_pi[(i*3)+2]);
     }
     apa102_end();
@@ -562,49 +579,48 @@ int main(void) {
 
 
     
-# 74 "load.c" 3
+# 88 "load.c" 3
    (*(volatile uint8_t *)((0X35) + 0x20))
-# 74 "load.c"
+# 88 "load.c"
         |= (1<<
-# 74 "load.c" 3
+# 88 "load.c" 3
                7
-# 74 "load.c"
+# 88 "load.c"
                   );
     
-# 75 "load.c" 3
+# 89 "load.c" 3
    (*(volatile uint8_t *)((0X35) + 0x20))
-# 75 "load.c"
+# 89 "load.c"
         |= (1<<
-# 75 "load.c" 3
+# 89 "load.c" 3
                7
-# 75 "load.c"
+# 89 "load.c"
                   );
 
     delay_ms(1);
 
 
     
-# 80 "load.c" 3
+# 94 "load.c" 3
    (*(volatile uint8_t *)((0x0A) + 0x20)) 
-# 80 "load.c"
+# 94 "load.c"
         &= ~0xF;
     
-# 81 "load.c" 3
+# 95 "load.c" 3
    (*(volatile uint8_t *)((0x0B) + 0x20)) 
-# 81 "load.c"
+# 95 "load.c"
          |= 0xF;
 
 
-
     
-# 85 "load.c" 3
+# 98 "load.c" 3
    (*(volatile uint8_t *)((0x07) + 0x20)) 
-# 85 "load.c"
+# 98 "load.c"
         |= (1<<2);
     
-# 86 "load.c" 3
+# 99 "load.c" 3
    (*(volatile uint8_t *)((0x08) + 0x20))
-# 86 "load.c"
+# 99 "load.c"
    &=~(1<<2);;
 
 
@@ -615,9 +631,9 @@ int main(void) {
     i2c_init(0x10);
 
     
-# 95 "load.c" 3
+# 108 "load.c" 3
    __asm__ __volatile__ ("sei" ::: "memory")
-# 95 "load.c"
+# 108 "load.c"
         ;
 
     for (int i = 0; i <50; i++){
@@ -654,24 +670,24 @@ int main(void) {
 
 
                 if (i == 0) tmp = (
-# 130 "load.c" 3
+# 143 "load.c" 3
                                   (*(volatile uint8_t *)((0x09) + 0x20)) 
-# 130 "load.c"
+# 143 "load.c"
                                        >> 0) & 1;
                 if (i == 1) tmp = (
-# 131 "load.c" 3
+# 144 "load.c" 3
                                   (*(volatile uint8_t *)((0x09) + 0x20)) 
-# 131 "load.c"
+# 144 "load.c"
                                        >> 1) & 1;
                 if (i == 2) tmp = (
-# 132 "load.c" 3
+# 145 "load.c" 3
                                   (*(volatile uint8_t *)((0x09) + 0x20)) 
-# 132 "load.c"
+# 145 "load.c"
                                        >> 2) & 1;
                 if (i == 3) tmp = (
-# 133 "load.c" 3
+# 146 "load.c" 3
                                   (*(volatile uint8_t *)((0x09) + 0x20)) 
-# 133 "load.c"
+# 146 "load.c"
                                        >> 3) & 1;
 
 
@@ -696,9 +712,9 @@ int main(void) {
             data_po[0] = tmp0;
 
             
-# 156 "load.c" 3
+# 169 "load.c" 3
            (*(volatile uint8_t *)((0x08) + 0x20))
-# 156 "load.c"
+# 169 "load.c"
            |=(1<<2);;
             button_changed = 0;
         }

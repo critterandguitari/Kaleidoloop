@@ -13,24 +13,24 @@ __zero_reg__ = 1
 apa102_init:
 .LFB0:
 	.file 1 "apa102.c"
-	.loc 1 13 24 view -0
+	.loc 1 11 24 view -0
 	.cfi_startproc
 /* prologue: function */
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
-	.loc 1 15 4 view .LVU1
-	.loc 1 15 9 is_stmt 0 view .LVU2
+	.loc 1 13 4 view .LVU1
+	.loc 1 13 9 is_stmt 0 view .LVU2
 	in r24,0x4
 	ori r24,lo8(-96)
 	out 0x4,r24
-	.loc 1 16 4 is_stmt 1 view .LVU3
-	.loc 1 16 10 is_stmt 0 view .LVU4
+	.loc 1 14 4 is_stmt 1 view .LVU3
+	.loc 1 14 10 is_stmt 0 view .LVU4
 	in r24,0x5
 	ori r24,lo8(-96)
 	out 0x5,r24
 /* epilogue start */
-	.loc 1 18 1 view .LVU5
+	.loc 1 16 1 view .LVU5
 	ret
 	.cfi_endproc
 .LFE0:
@@ -41,72 +41,72 @@ apa102_init:
 apa102_transmit_byte:
 .LVL0:
 .LFB1:
-	.loc 1 20 41 is_stmt 1 view -0
+	.loc 1 18 41 is_stmt 1 view -0
 	.cfi_startproc
 /* prologue: function */
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
-	.loc 1 21 5 view .LVU7
+	.loc 1 19 5 view .LVU7
 .LBB2:
-	.loc 1 21 10 view .LVU8
-	.loc 1 21 21 view .LVU9
+	.loc 1 19 10 view .LVU8
+	.loc 1 19 21 view .LVU9
 .LBE2:
-	.loc 1 20 41 is_stmt 0 view .LVU10
+	.loc 1 18 41 is_stmt 0 view .LVU10
 	ldi r18,lo8(8)
 	ldi r19,0
 .LVL1:
 .L5:
 .LBB3:
-	.loc 1 22 9 is_stmt 1 view .LVU11
-	.loc 1 22 12 is_stmt 0 view .LVU12
+	.loc 1 20 9 is_stmt 1 view .LVU11
+	.loc 1 20 12 is_stmt 0 view .LVU12
 	sbrs r24,7
 	rjmp .L3
-	.loc 1 23 12 is_stmt 1 view .LVU13
-	.loc 1 23 12 is_stmt 0 view .LVU14
+	.loc 1 21 12 is_stmt 1 view .LVU13
+	.loc 1 21 12 is_stmt 0 view .LVU14
 	sbi 0x5,5
-	.loc 1 23 21 is_stmt 1 view .LVU15
+	.loc 1 21 21 is_stmt 1 view .LVU15
 .L4:
-	.loc 1 25 22 discriminator 1 view .LVU16
-	.loc 1 27 9 discriminator 1 view .LVU17
+	.loc 1 23 22 discriminator 1 view .LVU16
+	.loc 1 25 9 discriminator 1 view .LVU17
+/* #APP */
+ ;  25 "apa102.c" 1
+	nop
+ ;  0 "" 2
+	.loc 1 26 8 discriminator 1 view .LVU18
+	.loc 1 26 8 is_stmt 0 discriminator 1 view .LVU19
+/* #NOAPP */
+	cbi 0x5,7
+	.loc 1 26 18 is_stmt 1 discriminator 1 view .LVU20
+	.loc 1 27 9 discriminator 1 view .LVU21
 /* #APP */
  ;  27 "apa102.c" 1
 	nop
  ;  0 "" 2
-	.loc 1 28 8 discriminator 1 view .LVU18
-	.loc 1 28 8 is_stmt 0 discriminator 1 view .LVU19
-/* #NOAPP */
-	cbi 0x5,7
-	.loc 1 28 18 is_stmt 1 discriminator 1 view .LVU20
-	.loc 1 29 9 discriminator 1 view .LVU21
-/* #APP */
- ;  29 "apa102.c" 1
-	nop
- ;  0 "" 2
-	.loc 1 30 8 discriminator 1 view .LVU22
-	.loc 1 30 8 is_stmt 0 discriminator 1 view .LVU23
+	.loc 1 28 8 discriminator 1 view .LVU22
+	.loc 1 28 8 is_stmt 0 discriminator 1 view .LVU23
 /* #NOAPP */
 	sbi 0x5,7
-	.loc 1 30 17 is_stmt 1 discriminator 1 view .LVU24
-	.loc 1 31 9 discriminator 1 view .LVU25
-	.loc 1 31 14 is_stmt 0 discriminator 1 view .LVU26
+	.loc 1 28 17 is_stmt 1 discriminator 1 view .LVU24
+	.loc 1 29 9 discriminator 1 view .LVU25
+	.loc 1 29 14 is_stmt 0 discriminator 1 view .LVU26
 	lsl r24
 .LVL2:
-	.loc 1 21 28 is_stmt 1 discriminator 1 view .LVU27
-	.loc 1 21 21 discriminator 1 view .LVU28
+	.loc 1 19 28 is_stmt 1 discriminator 1 view .LVU27
+	.loc 1 19 21 discriminator 1 view .LVU28
 	subi r18,1
 	sbc r19,__zero_reg__
 .LVL3:
-	.loc 1 21 5 is_stmt 0 discriminator 1 view .LVU29
+	.loc 1 19 5 is_stmt 0 discriminator 1 view .LVU29
 	brne .L5
 /* epilogue start */
 .LBE3:
-	.loc 1 33 1 view .LVU30
+	.loc 1 31 1 view .LVU30
 	ret
 .L3:
 .LBB4:
-	.loc 1 25 12 is_stmt 1 view .LVU31
-	.loc 1 25 12 is_stmt 0 view .LVU32
+	.loc 1 23 12 is_stmt 1 view .LVU31
+	.loc 1 23 12 is_stmt 0 view .LVU32
 	cbi 0x5,5
 	rjmp .L4
 .LBE4:
@@ -118,36 +118,36 @@ apa102_transmit_byte:
 	.type	apa102_start, @function
 apa102_start:
 .LFB2:
-	.loc 1 35 25 is_stmt 1 view -0
+	.loc 1 33 25 is_stmt 1 view -0
 	.cfi_startproc
 /* prologue: function */
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
-	.loc 1 36 5 view .LVU34
+	.loc 1 34 5 view .LVU34
 .LBB5:
-	.loc 1 36 10 view .LVU35
+	.loc 1 34 10 view .LVU35
 .LVL4:
-	.loc 1 36 25 view .LVU36
-	.loc 1 37 9 view .LVU37
+	.loc 1 34 25 view .LVU36
+	.loc 1 35 9 view .LVU37
 	ldi r24,0
 	call apa102_transmit_byte
 .LVL5:
-	.loc 1 36 32 view .LVU38
-	.loc 1 36 25 view .LVU39
-	.loc 1 37 9 view .LVU40
+	.loc 1 34 32 view .LVU38
+	.loc 1 34 25 view .LVU39
+	.loc 1 35 9 view .LVU40
 	ldi r24,0
 	call apa102_transmit_byte
 .LVL6:
-	.loc 1 36 32 view .LVU41
-	.loc 1 36 25 view .LVU42
-	.loc 1 37 9 view .LVU43
+	.loc 1 34 32 view .LVU41
+	.loc 1 34 25 view .LVU42
+	.loc 1 35 9 view .LVU43
 	ldi r24,0
 	call apa102_transmit_byte
 .LVL7:
-	.loc 1 36 32 view .LVU44
-	.loc 1 36 25 view .LVU45
-	.loc 1 37 9 view .LVU46
+	.loc 1 34 32 view .LVU44
+	.loc 1 34 25 view .LVU45
+	.loc 1 35 9 view .LVU46
 	ldi r24,0
 	jmp apa102_transmit_byte
 .LVL8:
@@ -160,20 +160,20 @@ apa102_start:
 	.type	apa102_end, @function
 apa102_end:
 .LFB3:
-	.loc 1 43 23 view -0
+	.loc 1 41 23 view -0
 	.cfi_startproc
 /* prologue: function */
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
-	.loc 1 44 5 view .LVU48
+	.loc 1 42 5 view .LVU48
 .LVL9:
-	.loc 1 45 5 view .LVU49
-	.loc 1 46 5 view .LVU50
+	.loc 1 43 5 view .LVU49
+	.loc 1 44 5 view .LVU50
 .LBB6:
-	.loc 1 46 10 view .LVU51
-	.loc 1 46 25 view .LVU52
-	.loc 1 47 9 view .LVU53
+	.loc 1 44 10 view .LVU51
+	.loc 1 44 25 view .LVU52
+	.loc 1 45 9 view .LVU53
 	ldi r24,lo8(-1)
 	jmp apa102_transmit_byte
 .LVL10:
@@ -187,9 +187,9 @@ apa102_end:
 apa102_set_led:
 .LVL11:
 .LFB4:
-	.loc 1 52 54 view -0
+	.loc 1 50 54 view -0
 	.cfi_startproc
-	.loc 1 52 54 is_stmt 0 view .LVU55
+	.loc 1 50 54 is_stmt 0 view .LVU55
 	push r17
 	.cfi_def_cfa_offset 3
 	.cfi_offset 17, -2
@@ -206,36 +206,36 @@ apa102_set_led:
 	mov r17,r24
 	mov r29,r22
 	mov r28,r20
-	.loc 1 53 5 is_stmt 1 view .LVU56
+	.loc 1 51 5 is_stmt 1 view .LVU56
 	ldi r24,lo8(-1)
 .LVL12:
-	.loc 1 53 5 is_stmt 0 view .LVU57
+	.loc 1 51 5 is_stmt 0 view .LVU57
 	call apa102_transmit_byte
 .LVL13:
-	.loc 1 54 5 is_stmt 1 view .LVU58
+	.loc 1 52 5 is_stmt 1 view .LVU58
 	mov r24,r17
 	call apa102_transmit_byte
 .LVL14:
-	.loc 1 55 5 view .LVU59
+	.loc 1 53 5 view .LVU59
 	mov r24,r29
 	call apa102_transmit_byte
 .LVL15:
-	.loc 1 56 5 view .LVU60
+	.loc 1 54 5 view .LVU60
 	mov r24,r28
 /* epilogue start */
-	.loc 1 57 1 is_stmt 0 view .LVU61
+	.loc 1 55 1 is_stmt 0 view .LVU61
 	pop r29
 .LVL16:
-	.loc 1 57 1 view .LVU62
+	.loc 1 55 1 view .LVU62
 	pop r28
 .LVL17:
-	.loc 1 57 1 view .LVU63
+	.loc 1 55 1 view .LVU63
 	pop r17
 .LVL18:
-	.loc 1 56 5 view .LVU64
+	.loc 1 54 5 view .LVU64
 	jmp apa102_transmit_byte
 .LVL19:
-	.loc 1 56 5 view .LVU65
+	.loc 1 54 5 view .LVU65
 	.cfi_endproc
 .LFE4:
 	.size	apa102_set_led, .-apa102_set_led
@@ -245,9 +245,9 @@ apa102_set_led:
 apa102_set_all_leds:
 .LVL20:
 .LFB5:
-	.loc 1 60 59 is_stmt 1 view -0
+	.loc 1 58 59 is_stmt 1 view -0
 	.cfi_startproc
-	.loc 1 60 59 is_stmt 0 view .LVU67
+	.loc 1 58 59 is_stmt 0 view .LVU67
 	push r17
 	.cfi_def_cfa_offset 3
 	.cfi_offset 17, -2
@@ -264,52 +264,44 @@ apa102_set_all_leds:
 	mov r28,r24
 	mov r29,r22
 	mov r17,r20
-	.loc 1 61 5 is_stmt 1 view .LVU68
+	.loc 1 59 5 is_stmt 1 view .LVU68
 	call apa102_start
 .LVL21:
-	.loc 1 62 5 view .LVU69
+	.loc 1 60 5 view .LVU69
 .LBB7:
-	.loc 1 62 10 view .LVU70
-	.loc 1 62 25 view .LVU71
-	.loc 1 63 9 view .LVU72
+	.loc 1 60 10 view .LVU70
+	.loc 1 60 25 view .LVU71
+	.loc 1 61 9 view .LVU72
 	mov r20,r17
 	mov r22,r29
 	mov r24,r28
 	call apa102_set_led
 .LVL22:
-	.loc 1 62 32 view .LVU73
-	.loc 1 62 25 view .LVU74
-	.loc 1 63 9 view .LVU75
+	.loc 1 60 32 view .LVU73
+	.loc 1 60 25 view .LVU74
+	.loc 1 61 9 view .LVU75
 	mov r20,r17
 	mov r22,r29
 	mov r24,r28
 	call apa102_set_led
 .LVL23:
-	.loc 1 62 32 view .LVU76
-	.loc 1 62 25 view .LVU77
-	.loc 1 63 9 view .LVU78
-	mov r20,r17
-	mov r22,r29
-	mov r24,r28
-	call apa102_set_led
-.LVL24:
-	.loc 1 62 32 view .LVU79
-	.loc 1 62 25 view .LVU80
+	.loc 1 60 32 view .LVU76
+	.loc 1 60 25 view .LVU77
 .LBE7:
-	.loc 1 65 5 view .LVU81
+	.loc 1 63 5 view .LVU78
 /* epilogue start */
-	.loc 1 66 1 is_stmt 0 view .LVU82
+	.loc 1 64 1 is_stmt 0 view .LVU79
 	pop r29
-.LVL25:
-	.loc 1 66 1 view .LVU83
+.LVL24:
+	.loc 1 64 1 view .LVU80
 	pop r28
-.LVL26:
-	.loc 1 66 1 view .LVU84
+.LVL25:
+	.loc 1 64 1 view .LVU81
 	pop r17
-.LVL27:
-	.loc 1 65 5 view .LVU85
+.LVL26:
+	.loc 1 63 5 view .LVU82
 	jmp apa102_end
-.LVL28:
+.LVL27:
 	.cfi_endproc
 .LFE5:
 	.size	apa102_set_all_leds, .-apa102_set_all_leds
@@ -318,7 +310,7 @@ apa102_set_all_leds:
 	.file 2 "/usr/local/Cellar/avr-gcc@9/9.3.0_3/avr/include/stdint.h"
 	.section	.debug_info,"",@progbits
 .Ldebug_info0:
-	.long	0x301
+	.long	0x2e1
 	.word	0x4
 	.long	.Ldebug_abbrev0
 	.byte	0x4
@@ -371,17 +363,17 @@ apa102_set_all_leds:
 	.uleb128 0x5
 	.long	.LASF7
 	.byte	0x1
-	.byte	0x3c
+	.byte	0x3a
 	.byte	0x6
 	.long	.LFB5
 	.long	.LFE5-.LFB5
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x144
+	.long	0x124
 	.uleb128 0x6
 	.string	"r"
 	.byte	0x1
-	.byte	0x3c
+	.byte	0x3a
 	.byte	0x22
 	.long	0x2c
 	.long	.LLST6
@@ -389,7 +381,7 @@ apa102_set_all_leds:
 	.uleb128 0x6
 	.string	"g"
 	.byte	0x1
-	.byte	0x3c
+	.byte	0x3a
 	.byte	0x2d
 	.long	0x2c
 	.long	.LLST7
@@ -397,7 +389,7 @@ apa102_set_all_leds:
 	.uleb128 0x6
 	.string	"b"
 	.byte	0x1
-	.byte	0x3c
+	.byte	0x3a
 	.byte	0x38
 	.long	0x2c
 	.long	.LLST8
@@ -405,18 +397,18 @@ apa102_set_all_leds:
 	.uleb128 0x7
 	.long	.LBB7
 	.long	.LBE7-.LBB7
-	.long	0x131
+	.long	0x111
 	.uleb128 0x8
 	.string	"i"
 	.byte	0x1
-	.byte	0x3e
+	.byte	0x3c
 	.byte	0x12
 	.long	0x2c
 	.long	.LLST9
 	.long	.LVUS9
 	.uleb128 0x9
 	.long	.LVL22
-	.long	0x144
+	.long	0x124
 	.long	0xf4
 	.uleb128 0xa
 	.uleb128 0x1
@@ -437,32 +429,9 @@ apa102_set_all_leds:
 	.byte	0x81
 	.sleb128 0
 	.byte	0
-	.uleb128 0x9
-	.long	.LVL23
-	.long	0x144
-	.long	0x114
-	.uleb128 0xa
-	.uleb128 0x1
-	.byte	0x68
-	.uleb128 0x2
-	.byte	0x8c
-	.sleb128 0
-	.uleb128 0xa
-	.uleb128 0x1
-	.byte	0x66
-	.uleb128 0x2
-	.byte	0x8d
-	.sleb128 0
-	.uleb128 0xa
-	.uleb128 0x1
-	.byte	0x64
-	.uleb128 0x2
-	.byte	0x81
-	.sleb128 0
-	.byte	0
 	.uleb128 0xb
-	.long	.LVL24
-	.long	0x144
+	.long	.LVL23
+	.long	0x124
 	.uleb128 0xa
 	.uleb128 0x1
 	.byte	0x68
@@ -485,25 +454,25 @@ apa102_set_all_leds:
 	.byte	0
 	.uleb128 0xc
 	.long	.LVL21
-	.long	0x234
+	.long	0x214
 	.uleb128 0xd
-	.long	.LVL28
-	.long	0x1de
+	.long	.LVL27
+	.long	0x1be
 	.byte	0
 	.uleb128 0x5
 	.long	.LASF8
 	.byte	0x1
-	.byte	0x34
+	.byte	0x32
 	.byte	0x6
 	.long	.LFB4
 	.long	.LFE4-.LFB4
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x1de
+	.long	0x1be
 	.uleb128 0x6
 	.string	"r"
 	.byte	0x1
-	.byte	0x34
+	.byte	0x32
 	.byte	0x1d
 	.long	0x2c
 	.long	.LLST3
@@ -511,7 +480,7 @@ apa102_set_all_leds:
 	.uleb128 0x6
 	.string	"g"
 	.byte	0x1
-	.byte	0x34
+	.byte	0x32
 	.byte	0x28
 	.long	0x2c
 	.long	.LLST4
@@ -519,15 +488,15 @@ apa102_set_all_leds:
 	.uleb128 0x6
 	.string	"b"
 	.byte	0x1
-	.byte	0x34
+	.byte	0x32
 	.byte	0x33
 	.long	0x2c
 	.long	.LLST5
 	.long	.LVUS5
 	.uleb128 0x9
 	.long	.LVL13
-	.long	0x2af
-	.long	0x1a4
+	.long	0x28f
+	.long	0x184
 	.uleb128 0xa
 	.uleb128 0x1
 	.byte	0x68
@@ -537,8 +506,8 @@ apa102_set_all_leds:
 	.byte	0
 	.uleb128 0x9
 	.long	.LVL14
-	.long	0x2af
-	.long	0x1b8
+	.long	0x28f
+	.long	0x198
 	.uleb128 0xa
 	.uleb128 0x1
 	.byte	0x68
@@ -548,8 +517,8 @@ apa102_set_all_leds:
 	.byte	0
 	.uleb128 0x9
 	.long	.LVL15
-	.long	0x2af
-	.long	0x1cc
+	.long	0x28f
+	.long	0x1ac
 	.uleb128 0xa
 	.uleb128 0x1
 	.byte	0x68
@@ -559,7 +528,7 @@ apa102_set_all_leds:
 	.byte	0
 	.uleb128 0xe
 	.long	.LVL19
-	.long	0x2af
+	.long	0x28f
 	.uleb128 0xa
 	.uleb128 0x1
 	.byte	0x68
@@ -572,24 +541,24 @@ apa102_set_all_leds:
 	.uleb128 0x5
 	.long	.LASF9
 	.byte	0x1
-	.byte	0x2b
+	.byte	0x29
 	.byte	0x6
 	.long	.LFB3
 	.long	.LFE3-.LFB3
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x234
+	.long	0x214
 	.uleb128 0xf
 	.long	.LASF10
 	.byte	0x1
-	.byte	0x2c
+	.byte	0x2a
 	.byte	0xd
 	.long	0x2c
-	.byte	0x3
+	.byte	0x2
 	.uleb128 0xf
 	.long	.LASF11
 	.byte	0x1
-	.byte	0x2d
+	.byte	0x2b
 	.byte	0xd
 	.long	0x2c
 	.byte	0x1
@@ -599,13 +568,13 @@ apa102_set_all_leds:
 	.uleb128 0x11
 	.string	"i"
 	.byte	0x1
-	.byte	0x2e
+	.byte	0x2c
 	.byte	0x12
 	.long	0x2c
 	.byte	0
 	.uleb128 0xe
 	.long	.LVL10
-	.long	0x2af
+	.long	0x28f
 	.uleb128 0xa
 	.uleb128 0x1
 	.byte	0x68
@@ -618,28 +587,28 @@ apa102_set_all_leds:
 	.uleb128 0x5
 	.long	.LASF12
 	.byte	0x1
-	.byte	0x23
+	.byte	0x21
 	.byte	0x6
 	.long	.LFB2
 	.long	.LFE2-.LFB2
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x2af
+	.long	0x28f
 	.uleb128 0x10
 	.long	.LBB5
 	.long	.LBE5-.LBB5
 	.uleb128 0x8
 	.string	"i"
 	.byte	0x1
-	.byte	0x24
+	.byte	0x22
 	.byte	0x12
 	.long	0x2c
 	.long	.LLST2
 	.long	.LVUS2
 	.uleb128 0x9
 	.long	.LVL5
-	.long	0x2af
-	.long	0x278
+	.long	0x28f
+	.long	0x258
 	.uleb128 0xa
 	.uleb128 0x1
 	.byte	0x68
@@ -648,8 +617,8 @@ apa102_set_all_leds:
 	.byte	0
 	.uleb128 0x9
 	.long	.LVL6
-	.long	0x2af
-	.long	0x28b
+	.long	0x28f
+	.long	0x26b
 	.uleb128 0xa
 	.uleb128 0x1
 	.byte	0x68
@@ -658,8 +627,8 @@ apa102_set_all_leds:
 	.byte	0
 	.uleb128 0x9
 	.long	.LVL7
-	.long	0x2af
-	.long	0x29e
+	.long	0x28f
+	.long	0x27e
 	.uleb128 0xa
 	.uleb128 0x1
 	.byte	0x68
@@ -668,7 +637,7 @@ apa102_set_all_leds:
 	.byte	0
 	.uleb128 0xe
 	.long	.LVL8
-	.long	0x2af
+	.long	0x28f
 	.uleb128 0xa
 	.uleb128 0x1
 	.byte	0x68
@@ -680,17 +649,17 @@ apa102_set_all_leds:
 	.uleb128 0x5
 	.long	.LASF13
 	.byte	0x1
-	.byte	0x14
+	.byte	0x12
 	.byte	0x6
 	.long	.LFB1
 	.long	.LFE1-.LFB1
 	.uleb128 0x1
 	.byte	0x9c
-	.long	0x2f2
+	.long	0x2d2
 	.uleb128 0x12
 	.long	.LASF14
 	.byte	0x1
-	.byte	0x14
+	.byte	0x12
 	.byte	0x23
 	.long	0x2c
 	.long	.LLST0
@@ -700,7 +669,7 @@ apa102_set_all_leds:
 	.uleb128 0x8
 	.string	"i"
 	.byte	0x1
-	.byte	0x15
+	.byte	0x13
 	.byte	0xe
 	.long	0x3f
 	.long	.LLST1
@@ -710,7 +679,7 @@ apa102_set_all_leds:
 	.uleb128 0x14
 	.long	.LASF19
 	.byte	0x1
-	.byte	0xd
+	.byte	0xb
 	.byte	0x6
 	.long	.LFB0
 	.long	.LFE0-.LFB0
@@ -1012,8 +981,8 @@ apa102_set_all_leds:
 	.uleb128 0
 	.uleb128 .LVU69
 	.uleb128 .LVU69
-	.uleb128 .LVU84
-	.uleb128 .LVU84
+	.uleb128 .LVU81
+	.uleb128 .LVU81
 	.uleb128 0
 .LLST6:
 	.long	.LVL20
@@ -1021,10 +990,10 @@ apa102_set_all_leds:
 	.word	0x1
 	.byte	0x68
 	.long	.LVL21-1
-	.long	.LVL26
+	.long	.LVL25
 	.word	0x1
 	.byte	0x6c
-	.long	.LVL26
+	.long	.LVL25
 	.long	.LFE5
 	.word	0x4
 	.byte	0xf3
@@ -1037,8 +1006,8 @@ apa102_set_all_leds:
 	.uleb128 0
 	.uleb128 .LVU69
 	.uleb128 .LVU69
-	.uleb128 .LVU83
-	.uleb128 .LVU83
+	.uleb128 .LVU80
+	.uleb128 .LVU80
 	.uleb128 0
 .LLST7:
 	.long	.LVL20
@@ -1046,10 +1015,10 @@ apa102_set_all_leds:
 	.word	0x1
 	.byte	0x66
 	.long	.LVL21-1
-	.long	.LVL25
+	.long	.LVL24
 	.word	0x1
 	.byte	0x6d
-	.long	.LVL25
+	.long	.LVL24
 	.long	.LFE5
 	.word	0x4
 	.byte	0xf3
@@ -1062,8 +1031,8 @@ apa102_set_all_leds:
 	.uleb128 0
 	.uleb128 .LVU69
 	.uleb128 .LVU69
-	.uleb128 .LVU85
-	.uleb128 .LVU85
+	.uleb128 .LVU82
+	.uleb128 .LVU82
 	.uleb128 0
 .LLST8:
 	.long	.LVL20
@@ -1071,10 +1040,10 @@ apa102_set_all_leds:
 	.word	0x1
 	.byte	0x64
 	.long	.LVL21-1
-	.long	.LVL27
+	.long	.LVL26
 	.word	0x1
 	.byte	0x61
-	.long	.LVL27
+	.long	.LVL26
 	.long	.LFE5
 	.word	0x4
 	.byte	0xf3
@@ -1089,8 +1058,6 @@ apa102_set_all_leds:
 	.uleb128 .LVU74
 	.uleb128 .LVU77
 	.uleb128 .LVU77
-	.uleb128 .LVU80
-	.uleb128 .LVU80
 	.uleb128 0
 .LLST9:
 	.long	.LVL21
@@ -1104,14 +1071,9 @@ apa102_set_all_leds:
 	.byte	0x31
 	.byte	0x9f
 	.long	.LVL23
-	.long	.LVL24
-	.word	0x2
-	.byte	0x32
-	.byte	0x9f
-	.long	.LVL24
 	.long	.LFE5
 	.word	0x2
-	.byte	0x33
+	.byte	0x32
 	.byte	0x9f
 	.long	0
 	.long	0
@@ -1348,12 +1310,12 @@ apa102_set_all_leds:
 	.string	"long unsigned int"
 .LASF11:
 	.string	"stop_bytes"
-.LASF17:
-	.string	"/Users/owen1/repos/Kaleidoloop/controllers/bbimx/atmega164"
 .LASF15:
 	.string	"GNU C99 9.3.0 -mn-flash=1 -mno-skip-bug -mmcu=avr5 -g -Os -std=gnu99 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections"
 .LASF8:
 	.string	"apa102_set_led"
+.LASF17:
+	.string	"/Users/owen1/repos/Kaleidoloop/hw/atmega164"
 .LASF2:
 	.string	"unsigned int"
 .LASF6:

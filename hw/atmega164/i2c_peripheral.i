@@ -1,5 +1,5 @@
 # 1 "i2c_peripheral.c"
-# 1 "/Users/owen1/repos/Kaleidoloop/controllers/bbimx/atmega164//"
+# 1 "/Users/owen1/repos/Kaleidoloop/hw/atmega164//"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "i2c_peripheral.c"
@@ -218,7 +218,7 @@ typedef struct
 # 7 "i2c_peripheral.h"
 void i2c_init(uint8_t address);
 void i2c_stop(void);
-void i2c_setCallbacks(void (*recv)(uint8_t), void (*req)());
+void i2c_setCallbacks(void (*recv)(uint8_t), void (*req)(void));
 
 inline void __attribute__((always_inline)) i2c_transmitByte(uint8_t data)
 {
@@ -240,9 +240,9 @@ uint8_t i2c_recv_index = 0;
 uint8_t i2c_send_index = 0;
 
 static void (*i2c_recv)(uint8_t);
-static void (*i2c_req)();
+static void (*i2c_req)(void);
 
-void i2c_setCallbacks(void (*recv)(uint8_t), void (*req)())
+void i2c_setCallbacks(void (*recv)(uint8_t), void (*req)(void))
 {
   i2c_recv = recv;
   i2c_req = req;

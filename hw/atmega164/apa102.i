@@ -1,5 +1,5 @@
 # 1 "apa102.c"
-# 1 "/Users/owen1/repos/Kaleidoloop/controllers/bbimx/atmega164//"
+# 1 "/Users/owen1/repos/Kaleidoloop/hw/atmega164//"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "apa102.c"
@@ -214,18 +214,24 @@ void apa102_end(void);
 void apa102_set_led(uint8_t r, uint8_t g, uint8_t b);
 void apa102_set_all_leds(uint8_t r, uint8_t g, uint8_t b);
 # 4 "apa102.c" 2
-# 13 "apa102.c"
+
+
+
+
+
+
+
 void apa102_init(void) {
 
     
-# 15 "apa102.c" 3
+# 13 "apa102.c" 3
    (*(volatile uint8_t *)((0x04) + 0x20)) 
-# 15 "apa102.c"
+# 13 "apa102.c"
         |= ((1<<5)|(1<<7));
     
-# 16 "apa102.c" 3
+# 14 "apa102.c" 3
    (*(volatile uint8_t *)((0x05) + 0x20)) 
-# 16 "apa102.c"
+# 14 "apa102.c"
          |= ((1<<5)|(1<<7));
 
 }
@@ -234,28 +240,28 @@ void apa102_transmit_byte(uint8_t data) {
     for (int i = 0; i < 8; ++i) {
         if (data & 0x80) {
             
-# 23 "apa102.c" 3
+# 21 "apa102.c" 3
            (*(volatile uint8_t *)((0x05) + 0x20))
-# 23 "apa102.c"
+# 21 "apa102.c"
            |=(1<<5);;
         } else {
             
-# 25 "apa102.c" 3
+# 23 "apa102.c" 3
            (*(volatile uint8_t *)((0x05) + 0x20))
-# 25 "apa102.c"
+# 23 "apa102.c"
            &=~(1<<5);;
         }
+        __asm__ __volatile__ ("nop");
+        
+# 26 "apa102.c" 3
+       (*(volatile uint8_t *)((0x05) + 0x20))
+# 26 "apa102.c"
+       &=~(1<<7);;
         __asm__ __volatile__ ("nop");
         
 # 28 "apa102.c" 3
        (*(volatile uint8_t *)((0x05) + 0x20))
 # 28 "apa102.c"
-       &=~(1<<7);;
-        __asm__ __volatile__ ("nop");
-        
-# 30 "apa102.c" 3
-       (*(volatile uint8_t *)((0x05) + 0x20))
-# 30 "apa102.c"
        |=(1<<7);;
         data <<= 1;
     }
@@ -270,7 +276,7 @@ void apa102_start(void) {
 
 
 void apa102_end(void) {
-    uint8_t total_leds = 3;
+    uint8_t total_leds = 2;
     uint8_t stop_bytes = (total_leds + 15) / 16;
     for (uint8_t i = 0; i < stop_bytes; i++) {
         apa102_transmit_byte(0xff);
@@ -288,7 +294,7 @@ void apa102_set_led(uint8_t r, uint8_t g, uint8_t b) {
 
 void apa102_set_all_leds(uint8_t r, uint8_t g, uint8_t b) {
     apa102_start();
-    for (uint8_t i = 0; i < 3; i++) {
+    for (uint8_t i = 0; i < 2; i++) {
         apa102_set_led(r,g,b);
     }
     apa102_end();

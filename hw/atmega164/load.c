@@ -11,14 +11,15 @@
 #define INT_OFF PORTC&=~(1<<2);
 #define DELAY8	{asm volatile("nop");asm volatile("nop");asm volatile("nop");asm volatile("nop");asm volatile("nop");asm volatile("nop");asm volatile("nop");asm volatile("nop");}
 
-#define PO_SIZE 3
+#define PO_SIZE 5
+#define PI_SIZE 6
 // data peripheral output, buttons and knobs
-uint8_t data_po[PO_SIZE] = {0xFF,0,0};  // 1 byte for buttons, 2 bytes knobs
+uint8_t data_po[PO_SIZE] = {0xFF,0,0, 0, 0};  // 1 byte for buttons, 4 bytes knobs (2 each)
 uint8_t debounce_timer[4] = {0,0,0,0};
 uint8_t buttons[4] = {1,1,1,1};
 
 // data peripheral input, all leds
-uint8_t data_pi[6] = {  0,0,0,
+uint8_t data_pi[PI_SIZE] = {  0,0,0,
                         0,0,0};
 
 extern uint8_t i2c_recv_index;
@@ -27,10 +28,10 @@ extern uint8_t i2c_send_index;
 void i2c_received(uint8_t received_data) {
     data_pi[i2c_recv_index] = received_data;
     i2c_recv_index++;
-    if (i2c_recv_index == 6) i2c_recv_index = 0;
+    if (i2c_recv_index == PI_SIZE) i2c_recv_index = 0;
  }
 
-void i2c_requested() {
+void i2c_requested(void) {
     // buttons and knobs being read, so clear the interrupt output
     INT_OFF;
     i2c_transmitByte(data_po[i2c_send_index]);
@@ -51,18 +52,31 @@ void delay_ms(uint16_t dtime){
 
 void read_adc(void) {
     uint8_t ch = 0;
+    uint16_t v;
+    uint8_t h,l,ih, il;
     for (ch = 0; ch < 2; ch++) {
+
+        // get it
         ADMUX = ch;
-        ADMUX |= (1 << 5);    // left justify the result, 8 bits in ADCH
         ADCSRA = 0xD6;        // start it
         while(!(ADCSRA & 1<<ADIF));
-        data_po[ch + 1] = ADCH;  // data_po is 1 byte for buttons, 2 bytes knobs
+        v = ADC;
+
+        // data_po is 1 byte for buttons, 4 bytes knobs, clear intrrupts during update
+        l = (uint8_t)(v & 0xff);
+        h = (uint8_t)((v >> 8) & 0xff);
+        il = 1 + (ch * 2);
+        ih = 2 + (ch * 2);
+        cli();
+        data_po[il] = l;    // Lower 8 bits
+        data_po[ih] = h;    // Upper 2 bits
+        sei();
     }
 }
 
 void set_leds(void) {
     apa102_start();
-    for (uint8_t i = 0; i < 3; i++){
+    for (uint8_t i = 0; i < 2; i++){
         apa102_set_led(data_pi[i*3], data_pi[(i*3)+1], data_pi[(i*3)+2]);
     }
     apa102_end();
@@ -80,7 +94,6 @@ int main(void) {
     DDRD &= ~0xF;
     PORTD |= 0xF;
      
-
     // output interrupt signal on PC2
     DDRC |= (1<<2);
     INT_OFF;
@@ -118,7 +131,7 @@ int main(void) {
             read_adc();
         }
         else ms_count++;
- 
+
         for (uint8_t i = 0; i < 4; i++) {
 
             // button out of debounce interval
