@@ -274,7 +274,9 @@ void load_patch() {
         system("mount -o ro /dev/mmcblk1p2 /sdcard");  // in disk mode read only
 
         printf("run main patch\n");
-        system("/home/root/app/hw/scripts/run-patch.sh");
+        // if in dev mode, run the main patch, otherwise run the test patch
+        if (dev_mode) system("/home/root/app/hw/scripts/run-patch.sh");
+        else system("/home/root/app/hw/scripts/run-hwtest-patch.sh");
         system("/home/root/app/hw/scripts/connect-midi.sh &");
 
     }
